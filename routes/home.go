@@ -48,12 +48,12 @@ func homePostHandler(w http.ResponseWriter, r *http.Request) {
 		html += fmt.Sprintf("<th> Id </th> <th> Category </th> <th> Name </th> <th> Price </th>  <th> Quantity </th> <th> Total Amount </th>")
 		for _, p := range products {
 			html += "<tr>"
-			html += fmt.Sprintf(" <td> %d </td> <td> %s </td> <td> %s </td> <td> %.2f </td>  <td> %d </td> <td> %.2f </td>", p.Id, p.Category.Description, p.Name, p.Price, p.Quantity, p.Amount)
+			html += fmt.Sprintf(" <td> %d </td> <td> %s </td> <td> %s </td> <td> ₱ %.2f  </td>  <td> %d </td> <td> ₱ %.2f </td>", p.Id, p.Category.Description, p.Name, p.Price, p.Quantity, p.Amount)
 			html += "</tr>"
 		}
 		html += "</table>"
 	} else {
-		html += fmt.Sprintf(`<p class='alert alert-info'> Nothing found with "<code><strong> %s </strong></code>"</p>`, search)
+		html += fmt.Sprintf(`<p class='alert alert-info'> Nothing found with "<code><strong> %s </strong> "</code></p>`, search)
 	}
 
 	w.Write([]byte(html))

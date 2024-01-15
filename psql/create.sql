@@ -18,3 +18,13 @@ create table
         category bigint not null,
         constraint products_category_fk foreign key(category) references category(id)
     );
+
+create table
+    if not exists users(
+        id bigserial primary key,
+        firstname varchar(15) not null,
+        lastname varchar(20) not null,
+        email varchar(40) not null,
+        password varchar(100) not null,
+        status char(1) default '0'
+    );
