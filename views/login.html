@@ -29,16 +29,16 @@
                         </li>
                     </ul>
                     <div class="form-inline my-2 my-lg-0">
-                       <a href="/register" class="btn btn-info"> register </a>
+                       <a href="/register" class="btn btn-outline-info"> register </a>
                     </div>
                 </div>
             </div>
         </nav>
 
         <hr />
-        <!-- {{ if (ne .Message "") }}
-        <p class="alert alert-success"> {{ .Message }} </p>
-        {{ end }} -->
+    {{ if (ne .Alert.Message "") }}
+        <p class="alert alert-danger"> {{ .Alert.Message }} </p>
+        {{ end }}
         <div class="row">
             <div class="col-md-12">
                 <h3> Login </h3>
@@ -59,5 +59,10 @@
         </div>
 
     </div> <!-- end container -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://unpkg.com/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="/assets/js/jquery.js"></script>
+    <script src="/assets/js/bootstrap.js"></script>
 </body>
 </html>
