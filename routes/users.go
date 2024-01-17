@@ -33,13 +33,17 @@ func checkErrRegister(err error, w http.ResponseWriter, r *http.Request) {
 	message := "registered successfully!"
 	if err != nil {
 		switch err {
-		case models.ErrRequiredFirstName,
+		case models.ErrDuplicateKeyEmail,
+			models.ErrRequiredFirstName,
 			models.ErrRequiredLastName,
 			models.ErrRequiredEmail,
-			models.ErrRequiredPassword:
+			models.ErrInvalidEmail,
+			models.ErrRequiredPassword,
+			models.ErrMaxlimit:
 			message = fmt.Sprintf("%s", err)
 			break
 		default:
+			fmt.Println(err)
 			utils.InternalServerError(w)
 			return
 		}

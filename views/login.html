@@ -37,7 +37,7 @@
 
         <hr />
         {{ if (ne .Alert.Message "") }}
-        <p class="alert alert-danger"> {{ .Alert.Messae }} </p>
+        <p class="alert alert-{{ .Alert.Type }}"> {{ .Alert.Message }} </p>
         {{ end }}
         <div class="row">
             <div class="col-md-12">
@@ -49,7 +49,7 @@
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
-                            <input type="text" id="password" name="password" class="form-control" placeholder="create a password"/>                        
+                            <input type="password" id="password" name="password" class="form-control" placeholder="create a password"/>                        
                     </div>
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary"> login </button>

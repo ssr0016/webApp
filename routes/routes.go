@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/ssr0016/webapp/middleware"
 )
 
 func NewRouter() *mux.Router {
@@ -14,6 +15,7 @@ func NewRouter() *mux.Router {
 	r.HandleFunc("/register", registerPostHandler).Methods("POST")
 	r.HandleFunc("/login", loginGetHandler).Methods("GET")
 	r.HandleFunc("/login", loginPostHandler).Methods("POST")
+	r.HandleFunc("/admin", middleware.AuthRequired(adminGetHandler)).Methods("GET")
 
 	fileServer := http.FileServer(http.Dir("./assets/"))
 	r.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", fileServer))

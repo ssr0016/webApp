@@ -9,4 +9,7 @@ require (
 	golang.org/x/crypto v0.18.0
 )
 
-require github.com/gorilla/securecookie v1.1.2 // indirect
+require (
+	github.com/badoux/checkmail v1.2.4 // indirect
+	github.com/gorilla/securecookie v1.1.2 // indirect
+)
