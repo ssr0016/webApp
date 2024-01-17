@@ -12,10 +12,11 @@ type User struct {
 }
 
 func NewUser(user User) (bool, error) {
-	user, err := ValidateNewUser(user) // Validation
+	user, err := ValidateNewUser(user) // user registraton validation
 	if err != nil {
 		return false, err
 	}
+
 	con := Connect()
 	defer con.Close()
 	sql := "insert into users (firstname, lastname, email, password) values ($1, $2, $3, $4)"
@@ -32,6 +33,7 @@ func NewUser(user User) (bool, error) {
 	if err != nil {
 		return false, err
 	}
+
 	return true, nil
 }
 

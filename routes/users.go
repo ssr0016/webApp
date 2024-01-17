@@ -26,12 +26,11 @@ func registerPostHandler(w http.ResponseWriter, r *http.Request) {
 	user.Password = r.PostForm.Get("password")
 	_, err := models.NewUser(user)
 	checkErrRegister(err, w, r)
-
 }
 
 func checkErrRegister(err error, w http.ResponseWriter, r *http.Request) {
 	session, _ := sessions.Store.Get(r, "session")
-	message := "registered successfully"
+	message := "registered successfully!"
 	if err != nil {
 		switch err {
 		case models.ErrRequiredFirstName,
@@ -45,6 +44,7 @@ func checkErrRegister(err error, w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		session.Values["MESSAGE"] = message
+		session.Values["ALERT"] = "danger"
 		session.Save(r, w)
 		http.Redirect(w, r, "/register", 302)
 		return
