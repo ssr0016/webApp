@@ -49,3 +49,10 @@ func checkErrAuthenticate(err error, w http.ResponseWriter, r *http.Request, use
 	session.Save(r, w)
 	http.Redirect(w, r, "/admin", 302)
 }
+
+func logoutGetHandler(w http.ResponseWriter, r *http.Request) {
+	session, _ := sessions.Store.Get(r, "session")
+	delete(session.Values, "USERID")
+	session.Save(r, w)
+	http.Redirect(w, r, "/", 302)
+}

@@ -16,6 +16,7 @@ func NewRouter() *mux.Router {
 	r.HandleFunc("/login", loginGetHandler).Methods("GET")
 	r.HandleFunc("/login", loginPostHandler).Methods("POST")
 	r.HandleFunc("/admin", middleware.AuthRequired(adminGetHandler)).Methods("GET")
+	r.HandleFunc("/", middleware.AuthRequired(logoutGetHandler)).Methods("GET")
 
 	fileServer := http.FileServer(http.Dir("./assets/"))
 	r.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", fileServer))
