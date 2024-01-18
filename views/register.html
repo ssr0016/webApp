@@ -1,83 +1,86 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Registration</title>
-    <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/bootstrap.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-</head>
-    <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">GoWebApp</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">About</a>
-                        </li>
-                    </ul>
-                    <div class="form-inline my-2 my-lg-0">
-                       <a href="/login" class="btn btn-outline-info">Login</a>
-                    </div>
+</head>
+
+<body>
+
+    <div class="container bg-light">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand logo text-info" href="/">Go WebApp</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/"> <i class="fas fa-home"></i> Home <span
+                                class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"> <i class="fas fa-info-circle"></i> About</a>
+                    </li>
+                </ul>
+                <div class="form-inline my-2 my-lg-0">
+                    <a href="/login" class="btn btn-sm btn-outline-info">Login <i class="fas fa-sign-in-alt"></i> </a>
                 </div>
             </div>
         </nav>
 
-    <hr />
-    {{ if (ne .Alert.Message "") }}
-    <p class="alert alert-{{ .Alert.Type }}"> {{ .Alert.Message }} </p>
-    {{ end }}
-    <div class="row">
-        <div class="col-md-12">
-            <h3 class="logo"> Registration </h3>
-            <br class="my-4">
-            <form action="/register" method="POST">
-                <div class="form-group">
-                    <div class="form-row">
-                        <div class="col-md-6">
-                            <label for="firstname">First name</label>
-                            <input type="text" name="firstname" id="firstname" class="form-control"
-                                placeholder="provide your first name" />
-                        </div>
-                        <div class="col-md-6">
-                            <label for="lastname">Last name</label>
-                            <input type="text" name="lastname" id="lastname" class="form-control"
-                                placeholder="provide your last name" />
+        <hr />
+        {{ if (ne .Alert.Message "") }}
+        <p class="alert alert-{{ .Alert.Type }}"> {{ .Alert.Message }} </p>
+        {{ end }}
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="logo"> Registration </h3>
+                <br class="my-4">
+                <form action="/register" method="POST">
+                    <div class="form-group">
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <label for="firstname">First Name</label>
+                                <input type="text" name="firstname" id="firstname" class="form-control"
+                                    placeholder="Provide your first name" />
+                            </div>
+                            <div class="col-md-6">
+                                <label for="lastname">Last Name</label>
+                                <input type="text" name="lastname" id="lastname" class="form-control"
+                                    placeholder="Provide your last name" />
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="text" name="email" id="email" class="form-control" placeholder="provide your E-mail" />
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" name="password" id="password" class="form-control"
-                        placeholder="create a password" />
-                </div>
-                <button type="submit" class="btn btn-outline-primary"> Register <i class="far fa-save"></i> </button>
-            </form>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="text" name="email" id="email" class="form-control"
+                            placeholder="Provide your email" />
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" name="password" id="password" class="form-control"
+                            placeholder="Create a password" />
+                    </div>
+                    <button type="submit" class="btn btn-outline-primary">Register <i class="far fa-save"></i>
+                    </button>
+                </form>
+            </div>
         </div>
-    </div>
     </div> <!-- end container-->
-
-
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="https://unpkg.com/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="/assets/js/jquery.js"></script>
     <script src="/assets/js/bootstrap.js"></script>
 </body>
+
 </html>

@@ -2,19 +2,20 @@ package models
 
 import (
 	"errors"
+	"fmt"
 	"strings"
 
 	"github.com/badoux/checkmail"
 )
 
 var (
-	ErrRequiredFirstName = errors.New("First name is required")
-	ErrRequiredLastName  = errors.New("Last name is required")
-	ErrRequiredEmail     = errors.New("Email is required")
-	ErrInvalidEmail      = errors.New("Invalid email")
-	ErrRequiredPassword  = errors.New("Password is required")
-	ErrMaxlimit          = errors.New("Exceeded the maximum character limit")
-	ErrDuplicateKeyEmail = errors.New("Email already exists")
+	ErrRequiredFirstName = errors.New("First name required")
+	ErrRequiredLastName  = errors.New("Last name required")
+	ErrRequiredEmail     = errors.New("Email required")
+	ErrRequiredPassword  = errors.New("Password required")
+	ErrInvalidEmail      = errors.New("Email invalid")
+	ErrMaxLimit          = errors.New("Max characters limit reached")
+	ErrEmailTaken        = errors.New("Email already taken")
 )
 
 func IsEmpty(attr string) bool {
@@ -33,7 +34,6 @@ func IsEmail(email string) bool {
 	if err != nil {
 		return false
 	}
-
 	return true
 }
 
@@ -46,13 +46,12 @@ func Max(attr string, lim int) bool {
 
 func ValidateLimitFields(user User) (User, error) {
 	if !Max(user.FirstName, 15) || !Max(user.LastName, 20) || !Max(user.Email, 40) || !Max(user.Password, 100) {
-		return user, ErrMaxlimit
+		return User{}, ErrMaxLimit
 	}
-
 	return user, nil
 }
 
-func UniqueEmail(email string) (bool, error) {
+func VerifyEmail(email string) (bool, error) {
 	con := Connect()
 	defer con.Close()
 	sql := "select count(email) from users where email = $1"
@@ -69,26 +68,19 @@ func UniqueEmail(email string) (bool, error) {
 		}
 	}
 	if count > 0 {
-		return false, ErrDuplicateKeyEmail
+		return false, ErrEmailTaken
 	}
 	return true, nil
 }
 
 func ValidateNewUser(user User) (User, error) {
-	_, err := UniqueEmail(user.Email)
-	if err != nil {
-		return User{}, err
-	}
-
-	user, err = ValidateLimitFields(user)
+	user, err := ValidateLimitFields(user)
 	if err != nil {
 		return user, err
 	}
-
 	user.FirstName = Trim(user.FirstName)
 	user.LastName = Trim(user.LastName)
 	user.Email = Trim(strings.ToLower(user.Email))
-
 	if IsEmpty(user.FirstName) {
 		return User{}, ErrRequiredFirstName
 	}
@@ -104,6 +96,21 @@ func ValidateNewUser(user User) (User, error) {
 	if IsEmpty(user.Password) {
 		return User{}, ErrRequiredPassword
 	}
-
+	_, err = VerifyEmail(user.Email)
+	if err != nil {
+		return User{}, err
+	}
 	return user, nil
+}
+
+func Count(table string) (int64, error) {
+	con := Connect()
+	defer con.Close()
+	sql := fmt.Sprintf("select count(*) from %s", table)
+	var count int64
+	err := con.QueryRow(sql).Scan(&count)
+	if err != nil {
+		return 0, err
+	}
+	return count, nil
 }

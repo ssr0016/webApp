@@ -9,17 +9,16 @@ import (
 )
 
 var (
-	ErrEmailNotFound   = errors.New("Email not found")
+	ErrEmailNotFound   = errors.New("Email does not exist")
 	ErrInvalidPassword = errors.New("Invalid password")
-	ErrEmptyFields     = errors.New("Fill in all the fields")
+	ErrEmptyFields     = errors.New("Complete all fields")
 )
 
-func Signin(email, password string) (models.User, error) {
+func Singin(email, password string) (models.User, error) {
 	err := validateFields(strings.ToLower(email), password)
 	if err != nil {
 		return models.User{}, err
 	}
-
 	user, err := models.GetUserByEmail(email)
 	if err != nil {
 		return user, err
@@ -31,7 +30,6 @@ func Signin(email, password string) (models.User, error) {
 	if err != nil {
 		return models.User{}, ErrInvalidPassword
 	}
-
 	return user, nil
 }
 
@@ -42,6 +40,5 @@ func validateFields(email, password string) error {
 	if !models.IsEmail(email) {
 		return models.ErrInvalidEmail
 	}
-
 	return nil
 }

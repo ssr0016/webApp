@@ -12,11 +12,10 @@ type User struct {
 }
 
 func NewUser(user User) (bool, error) {
-	user, err := ValidateNewUser(user) // user registraton validation
+	user, err := ValidateNewUser(user)
 	if err != nil {
 		return false, err
 	}
-
 	con := Connect()
 	defer con.Close()
 	sql := "insert into users (firstname, lastname, email, password) values ($1, $2, $3, $4)"
@@ -33,8 +32,7 @@ func NewUser(user User) (bool, error) {
 	if err != nil {
 		return false, err
 	}
-
-	return true, nil
+	return true, err
 }
 
 func GetUserByEmail(email string) (User, error) {
@@ -48,15 +46,31 @@ func GetUserByEmail(email string) (User, error) {
 	defer rs.Close()
 	var user User
 	if rs.Next() {
-		err := rs.Scan(&user.Id,
-			&user.FirstName,
-			&user.LastName,
-			&user.Email,
-			&user.Password,
-			&user.Status)
+		err := rs.Scan(&user.Id, &user.FirstName, &user.LastName, &user.Email, &user.Password, &user.Status)
 		if err != nil {
 			return User{}, err
 		}
 	}
 	return user, nil
+}
+
+func GetUsers() ([]User, error) {
+	con := Connect()
+	defer con.Close()
+	sql := "select * from users"
+	rs, err := con.Query(sql)
+	if err != nil {
+		return nil, err
+	}
+	defer rs.Close()
+	var users []User
+	for rs.Next() {
+		var user User
+		err := rs.Scan(&user.Id, &user.FirstName, &user.LastName, &user.Email, &user.Password, &user.Status)
+		if err != nil {
+			return nil, err
+		}
+		users = append(users, user)
+	}
+	return users, nil
 }

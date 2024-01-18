@@ -11,6 +11,11 @@ import (
 )
 
 func loginGetHandler(w http.ResponseWriter, r *http.Request) {
+	_, isAuth := sessions.IsLogged(r)
+	if isAuth {
+		http.Redirect(w, r, "/admin", 302)
+		return
+	}
 	message, alert := sessions.Flash(r, w)
 	utils.ExecuteTemplate(w, "login.html", struct {
 		Alert utils.Alert
@@ -23,7 +28,7 @@ func loginPostHandler(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 	email := r.PostForm.Get("email")
 	password := r.PostForm.Get("password")
-	user, err := auth.Signin(email, password)
+	user, err := auth.Singin(email, password)
 	checkErrAuthenticate(err, w, r, user)
 }
 
@@ -39,11 +44,10 @@ func checkErrAuthenticate(err error, w http.ResponseWriter, r *http.Request, use
 			session.Values["ALERT"] = "danger"
 			session.Save(r, w)
 			http.Redirect(w, r, "/login", 302)
-			return
 		default:
 			utils.InternalServerError(w)
-			return
 		}
+		return
 	}
 	session.Values["USERID"] = user.Id
 	session.Save(r, w)

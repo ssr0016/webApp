@@ -17,6 +17,7 @@ func registerGetHandler(w http.ResponseWriter, r *http.Request) {
 		Alert: utils.NewAlert(message, alert),
 	})
 }
+
 func registerPostHandler(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 	var user models.User
@@ -29,32 +30,42 @@ func registerPostHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func checkErrRegister(err error, w http.ResponseWriter, r *http.Request) {
-	session, _ := sessions.Store.Get(r, "session")
-	message := "registered successfully!"
+	message := "Successfully registered!"
 	if err != nil {
 		switch err {
-		case models.ErrDuplicateKeyEmail,
+		case models.ErrMaxLimit,
 			models.ErrRequiredFirstName,
 			models.ErrRequiredLastName,
 			models.ErrRequiredEmail,
 			models.ErrInvalidEmail,
-			models.ErrRequiredPassword,
-			models.ErrMaxlimit:
+			models.ErrEmailTaken,
+			models.ErrRequiredPassword:
 			message = fmt.Sprintf("%s", err)
 			break
 		default:
-			fmt.Println(err)
 			utils.InternalServerError(w)
 			return
 		}
-		session.Values["MESSAGE"] = message
-		session.Values["ALERT"] = "danger"
-		session.Save(r, w)
+		sessions.Message(message, "danger", r, w)
 		http.Redirect(w, r, "/register", 302)
 		return
 	}
-	session.Values["MESSAGE"] = message
-	session.Values["ALERT"] = "success"
-	session.Save(r, w)
+	sessions.Message(message, "success", r, w)
 	http.Redirect(w, r, "/login", 302)
+}
+
+func userGetHandler(w http.ResponseWriter, r *http.Request) {
+	users, err := models.GetUsers()
+	if err != nil {
+		utils.InternalServerError(w)
+		return
+	}
+	total := int64(len(users))
+	utils.ExecuteTemplate(w, "user.html", struct {
+		Users []models.User
+		Total int64
+	}{
+		Users: users,
+		Total: total,
+	})
 }

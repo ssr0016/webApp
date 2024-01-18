@@ -16,8 +16,8 @@ const (
 
 func Connect() *sql.DB {
 	URL := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable", USER, PASS, DBNAME)
-	// db, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
 	db, err := sql.Open("postgres", URL)
+	//db, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -31,5 +31,5 @@ func TestConnection() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("Successfully connected!")
+	fmt.Println("Database connected successfully!")
 }
